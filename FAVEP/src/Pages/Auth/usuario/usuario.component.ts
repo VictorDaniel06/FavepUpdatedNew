@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -132,6 +132,18 @@ export class UsuarioComponent implements OnInit, OnDestroy {
 
   alternarMenu(): void {
     this.menuAberto = !this.menuAberto;
+  }
+
+  /**
+   * Fecha o menu se o clique ocorrer fora dele.
+   */
+  @HostListener('document:click', ['$event'])
+  fecharMenuFora(event: MouseEvent): void {
+    const alvo = event.target as HTMLElement;
+    // Verifica se o menu está aberto e se o clique não foi no botão que abre o menu ou no próprio menu
+    if (this.menuAberto && !alvo.closest('.menu-toggle') && !alvo.closest('.main-menu')) {
+      this.menuAberto = false;
+    }
   }
 
   navegarParaContato(): void {

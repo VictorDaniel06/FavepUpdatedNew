@@ -18,6 +18,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem; /* MODIFICADO: Adicionado espaçamento */
     z-index: 100;
     position: sticky;
     top: 0;
@@ -37,6 +38,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    flex-shrink: 1; /* MODIFICADO: Permite que o título encolha */
+    min-width: 0; /* MODIFICADO: Necessário para o encolhimento funcionar */
 }
 
 .header-logo-img {
@@ -49,6 +52,7 @@
     align-items: center;
     gap: 15px;
     white-space: nowrap;
+    flex-shrink: 0; /* MODIFICADO: Impede que a info do usuário encolha */
 }
 
 .user-avatar {
@@ -104,10 +108,12 @@
 /* ==== ESTILOS DO CONTEÚDO PRINCIPAL (REESTRUTURADOS) ==== */
 /* =================================================================== */
 .main-content-perfil {
-    padding: 35px; /* Aumentado o padding para mais espaço */
+    padding: 35px;
     background-color: #f5f7fa;
     flex-grow: 1;
     transition: background-color 0.3s ease-in-out;
+    grid-column: 2 / 3; /* Adicionado para posicionamento correto */
+    grid-row: 2 / 3;    /* Adicionado para posicionamento correto */
 }
 
 .container-perfil {
@@ -564,7 +570,7 @@
 /* =================================================================== */
 /* ==== RESPONSIVIDADE (MANTIDA) ==== */
 /* =================================================================== */
-@media (min-width: 769px) {
+@media (min-width: 414px) {
     .dashboard-container {
         display: grid;
         grid-template-columns: 250px 1fr;
@@ -591,11 +597,16 @@
     }
 
     .menu-toggle {
-        display: none !important;
+        display: none;
     }
 }
 
 @media (max-width: 768px) {
+    .dashboard-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+    }
+
     .dashboard-header h1 {
         font-size: 1.6rem;
     }
@@ -622,12 +633,20 @@
     .main-menu.open {
         transform: translateX(0);
     }
-
+    
     .main-content-perfil {
         padding: 20px;
+        grid-column: 1 / -1;
+    }
+
+    /* AJUSTE: Centraliza o cabeçalho do card (título e botão) */
+    .card-header {
+        flex-direction: column;
+        gap: 15px;
     }
 
     .profile-section {
+        display: flex;
         flex-direction: column;
     }
 
@@ -640,7 +659,12 @@
 
     .profile-details {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
+    }
+
+    /* AJUSTE: Centraliza o texto das informações do usuário */
+    .info-list {
+        text-align: center;
     }
 
     .plan-actions-container {
@@ -664,8 +688,7 @@
 
     .main-menu {
         width: 220px;
-        top: 66px;
-        height: calc(100vh - 66px);
+        top: 66px; /* Ajuste para possível altura do header */
     }
 
     .main-content-perfil {
@@ -698,7 +721,7 @@
 }
 
 .modal-body {
-    max-height: 60vh; /* Define uma altura máxima (60% da altura da tela) */
-    overflow-y: auto; /* Adiciona uma barra de rolagem vertical quando o conteúdo excede a altura máxima */
-    padding-right: 15px; /* Adiciona um espaço para a barra de rolagem não sobrepor o conteúdo */
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 15px;
 }
